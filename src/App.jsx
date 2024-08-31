@@ -1,12 +1,17 @@
-import React, { useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import Header from "./components/Header";
 import Main from "./components/Main";
+import Loader from "./components/Loader";
+import Error from "./components/Error";
+import StartScreen from "./components/StartScreen";
+import Questions from "./components/Questions";
 
 const initState = {
   questions: [],
 
   //'loading', 'error', 'ready', 'active', 'finished'
   status: "loading",
+  index: 0,
 };
 
 function reducer(state, action) {
@@ -22,18 +27,24 @@ function reducer(state, action) {
         ...state,
         status: "error",
       };
+    case "start":
+      return { ...state, status: "active" };
     default:
       return state;
   }
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initState);
+  const [{ questions, status, index }, dispatch] = useReducer(
+    reducer,
+    initState
+  );
+  const numQuestions = questions.length;
 
   useEffect(() => {
     async function dataFetch() {
       try {
-        const res = await fetch("http://localhost:800/questions");
+        const res = await fetch("http://localhost:8000/questions");
         const data = await res.json();
 
         dispatch({ type: "dataReceived", payload: data });
@@ -48,7 +59,14 @@ function App() {
   return (
     <div className="app">
       <Header />
-      <Main>{}</Main>
+      <Main>
+        {status === "loading" && <Loader />}
+        {status === "error" && <Error />}
+        {status === "ready" && (
+          <StartScreen dispatch={dispatch} numQuestions={numQuestions} />
+        )}
+        {status === "active" && <Questions question={questions[index]} />}
+      </Main>
     </div>
   );
 }
