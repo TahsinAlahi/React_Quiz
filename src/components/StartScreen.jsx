@@ -1,5 +1,3 @@
-import React from "react";
-
 function StartScreen({ numQuestions, dispatch }) {
   return (
     <div className="start">
@@ -9,7 +7,7 @@ function StartScreen({ numQuestions, dispatch }) {
         className="btn btn-ui"
         onClick={() => dispatch({ type: "start" })}
       >
-        Let's Start
+        Let&apos;s Start
       </button>
     </div>
   );

@@ -1,5 +1,3 @@
-import React from "react";
-
 function FinishedScreen({ points, maxPossiblePoints, highscore, dispatch }) {
   const percentage = (points / maxPossiblePoints) * 100;
   return (

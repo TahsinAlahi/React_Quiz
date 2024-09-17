@@ -1,4 +1,3 @@
-import React from "react";
 import Options from "./Options";
 
 function Questions({ question, dispatch, answer }) {
